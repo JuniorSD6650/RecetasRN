@@ -1,12 +1,13 @@
+// Home.tsx
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, ScrollView, Alert, Platform } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as MediaLibrary from 'expo-media-library';
 import { parse } from 'papaparse';
-import * as FileSystem from 'expo-file-system';
+import { readCSV } from '../utils/readCSV'; // Asegúrate de que la ruta es correcta
 
 const Home = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -31,7 +32,7 @@ const Home = () => {
       console.log('Iniciando la selección de archivo CSV...');
 
       const result = await DocumentPicker.getDocumentAsync({ type: 'text/csv' });
-      console.log('Resultado de la selección de archivo:', result);
+      console.log('Resultado de la selección de archivo:', JSON.stringify(result, null, 2));
 
       if (!result.canceled) {
         if (Platform.OS === 'web') {
@@ -40,7 +41,7 @@ const Home = () => {
 
           const reader = new FileReader();
 
-          reader.onload = async (event) => {
+          reader.onload = async (event: any) => {
             const fileContent = event.target.result;
             console.log('Contenido del archivo CSV:', fileContent);
 
@@ -65,16 +66,26 @@ const Home = () => {
 
           reader.readAsText(file);
         } else {
-          const fileUri = result.uri;
-          console.log('Archivo seleccionado URI:', fileUri);
+          let fileUri = null;
 
-          const parsedData = await readCSV(fileUri);
-          console.log('Datos parseados desde readCSV:', parsedData);
+          if (result.uri) {
+            fileUri = result.uri;
+          } else if (result.assets && result.assets.length > 0) {
+            fileUri = result.assets[0].uri;
+          }
 
-          if (Array.isArray(parsedData) && parsedData.length > 0) {
-            setData(parsedData);
+          if (fileUri) {
+            console.log('Archivo seleccionado URI:', fileUri);
+            const parsedData = await readCSV(fileUri);
+            console.log('Datos parseados desde readCSV:', parsedData);
+
+            if (Array.isArray(parsedData) && parsedData.length > 0) {
+              setData(parsedData);
+            } else {
+              Alert.alert('Información', 'No se encontraron datos en el archivo.');
+            }
           } else {
-            Alert.alert('Información', 'No se encontraron datos en el archivo.');
+            Alert.alert('Error', 'No se pudo obtener el URI del archivo.');
           }
 
           setLoading(false);
@@ -83,15 +94,15 @@ const Home = () => {
         Alert.alert('Información', 'No se seleccionó ningún archivo.');
         setLoading(false);
       }
-    } catch (error) {
+    } catch (error: any) {
       Alert.alert('Error', `Error al seleccionar el archivo: ${error.message}`);
       console.error('Error en handleCSVUpload:', error);
       setLoading(false);
     }
   };
 
-  const parseCSVContent = async (fileContent) => {
-    return new Promise((resolve, reject) => {
+  const parseCSVContent = async (fileContent: string) => {
+    return new Promise<any[]>((resolve, reject) => {
       parse(fileContent, {
         header: true,
         delimiter: ';',
@@ -115,11 +126,14 @@ const Home = () => {
         {data.length > 0 ? (
           data.slice(0, 10).map((item, index) => (
             <View key={index} style={{ marginBottom: 10 }}>
-              <Text>Centro: {item.CENTRO}</Text>
+              <Text>DNI: {item.DNI}</Text>
               <Text>Paciente: {item.PACIENTE}</Text>
               <Text>Medicamento: {item.DESC_MEDICAMENTO}</Text>
-              <Text>Hora Despacho: {item.HORA_DESPACHO}</Text>
-              <Text>Fecha Despacho: {item.FECHA_DESPACHO}</Text>
+              <Text>Cantidad de medicamento atendida: {item.CANT_ATENDIDA}</Text>
+              <Text>Cantidad de medicamento solicitada: {item.CANT_SOLICITUD}</Text>
+              <Text>Unidad: {item.UNIDAD}</Text>
+              <Text>Duración del tratamiento: {item.DIAS}</Text>
+              <Text>Fecha de despacho: {item.FECHA_DESPACHO}</Text>
             </View>
           ))
         ) : (

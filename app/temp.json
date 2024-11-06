@@ -1,0 +1,30 @@
+[
+    {
+      "DNI": "4002063",
+      "Paciente": "EUFRACIO SILVESTRE CARLOS",
+      "Medicamento": "TIAMINA CLORHIDRATO 100 MG",
+      "Cantidad_atendida": 30,
+      "Cantidad_solicitada": 90,
+      "Unidad": "TB",
+      "Duracion_tratamiento": 90
+    },
+    {
+      "DNI": "22472061",
+      "Paciente": "REYES GOMEZ AGLIBERTO",
+      "Medicamento": "TIAMINA CLORHIDRATO 100 MG",
+      "Cantidad_atendida": 30,
+      "Cantidad_solicitada": 90,
+      "Unidad": "TB",
+      "Duracion_tratamiento": 90
+    },
+    {
+      "DNI": "22463698",
+      "Paciente": "ORTEGA TARAZONA SONIA",
+      "Medicamento": "TIAMINA CLORHIDRATO 100 MG",
+      "Cantidad_atendida": 30,
+      "Cantidad_solicitada": 90,
+      "Unidad": "TB",
+      "Duracion_tratamiento": 90
+    }
+  ]
+  

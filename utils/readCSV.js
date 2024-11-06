@@ -1,10 +1,11 @@
+// readCSV.ts
 import { parse } from 'papaparse';
 import * as FileSystem from 'expo-file-system';
 
-export const readCSV = async (uri) => {
+export const readCSV = async (uri: string): Promise<any[]> => {
   try {
     // Leer el archivo CSV como texto
-    const fileContent = await FileSystem.readAsStringAsync(uri);
+    const fileContent = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.UTF8 });
     console.log('Contenido del archivo CSV:', fileContent); // Ver contenido del archivo
 
     return new Promise((resolve, reject) => {
