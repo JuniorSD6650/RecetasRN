@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
@@ -48,3 +49,7 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+=======
+# RecetasRN
+Extraer de un csv horas en las que un usuario debe tomar sus medicinas y crear notificaciones que se lo recuerden en la hora indicada
+>>>>>>> e1771a9d57f27f6d666a118d19ca8d3801d01233
